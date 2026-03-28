@@ -408,3 +408,4 @@ Please follow the existing code style and include tests for new functionality.
 ## License
 
 MIT
+\n## Installation\n\nTo install the project dependencies, run:\n\n```bash\nnpm install\n```
