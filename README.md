@@ -410,3 +410,4 @@ Please follow the existing code style and include tests for new functionality.
 MIT
 \n## Installation\n\nTo install the project dependencies, run:\n\n```bash\nnpm install\n```
 \n## Features\n\n- Real-time flight recording for AI agents\n- Interactive UI for session playback\n- Multi-language SDK support (Python, TypeScript)
+\n## Tech Stack\n\n- **Backend:** Node.js, Express, SQLite\n- **Frontend:** Next.js, Tailwind CSS\n- **SDKs:** Python, TypeScript
