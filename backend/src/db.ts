@@ -1,3 +1,4 @@
+// Database configuration and initialization for Agent Flight Recorder
 import Database from 'better-sqlite3';
 import path from 'path';
 
