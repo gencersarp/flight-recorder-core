@@ -1,3 +1,6 @@
+/**
+ * Core module for the Agent Flight Recorder TypeScript SDK.
+ */
 export type StepType = "LLM_CALL" | "TOOL_CALL" | "TOOL_RESULT" | "SYSTEM_EVENT";
 
 export interface StartRunOptions {
