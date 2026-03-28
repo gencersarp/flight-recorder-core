@@ -1,0 +1,13 @@
+{
+  "name": "agent-flight-recorder",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first black box recorder for LLM agents",
+  "scripts": {
+    "dev": "npm run dev:backend & npm run dev:ui & wait",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:ui": "cd ui && npm run dev",
+    "build": "cd backend && npm run build && cd ../ui && npm run build",
+    "install:all": "cd backend && npm install && cd ../ui && npm install && cd ../sdks/typescript && npm install"
+  }
+}
