@@ -1,3 +1,4 @@
+// Main entry point for the Flight Recorder backend API
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
