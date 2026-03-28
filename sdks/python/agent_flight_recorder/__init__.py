@@ -1,3 +1,4 @@
+"""Core module for the Agent Flight Recorder Python SDK."""
 import os
 import requests
 import uuid
