@@ -1,0 +1,21 @@
+{
+  "name": "agent-flight-recorder",
+  "version": "1.0.0",
+  "description": "TypeScript SDK for Agent Flight Recorder -- a local-first black box recorder for LLM agents",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["llm", "agent", "recorder", "observability", "flight-recorder"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "@types/node": "^20.0.0",
+    "vitest": "^3.2.1"
+  }
+}
