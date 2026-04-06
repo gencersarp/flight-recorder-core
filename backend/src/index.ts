@@ -417,6 +417,47 @@ app.get('/api/runs/:id/steps', (req: Request, res: Response) => {
 });
 
 // ---------------------------------------------------------------------------
+// GET /api/runs/:id/summary
+// ---------------------------------------------------------------------------
+app.get('/api/runs/:id/summary', (req: Request, res: Response) => {
+  try {
+    const run = findRunOrNull(req.params.id);
+    if (!run) {
+      res.status(404).json({ error: 'Run not found' });
+      return;
+    }
+
+    const steps = db.prepare('SELECT type, duration, token_count FROM steps WHERE run_id = ?').all(req.params.id) as any[];
+
+    const stepTypes: Record<string, number> = {};
+    let totalDurationMs = 0;
+    let totalTokens = 0;
+
+    for (const s of steps) {
+      stepTypes[s.type] = (stepTypes[s.type] ?? 0) + 1;
+      if (s.duration) totalDurationMs += s.duration;
+      if (s.token_count) totalTokens += s.token_count;
+    }
+
+    const createdAt = new Date(run.created_at).getTime();
+    const updatedAt = new Date(run.updated_at).getTime();
+
+    res.json({
+      run_id: run.id,
+      status: run.status,
+      model: run.model,
+      total_steps: steps.length,
+      step_type_counts: stepTypes,
+      total_llm_duration_ms: totalDurationMs,
+      total_tokens: totalTokens,
+      wall_time_ms: updatedAt - createdAt,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to fetch run summary', message: err.message });
+  }
+});
+
+// ---------------------------------------------------------------------------
 // POST /api/runs/:id/replay (item 7)
 // ---------------------------------------------------------------------------
 app.post('/api/runs/:id/replay', (req: Request, res: Response) => {
