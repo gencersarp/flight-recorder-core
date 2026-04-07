@@ -427,7 +427,7 @@ app.get('/api/runs/:id/summary', (req: Request, res: Response) => {
       return;
     }
 
-    const steps = db.prepare('SELECT type, duration, token_count FROM steps WHERE run_id = ?').all(req.params.id) as any[];
+    const steps = db.prepare('SELECT type, duration, payload FROM steps WHERE run_id = ?').all(req.params.id) as any[];
 
     const stepTypes: Record<string, number> = {};
     let totalDurationMs = 0;
@@ -436,7 +436,16 @@ app.get('/api/runs/:id/summary', (req: Request, res: Response) => {
     for (const s of steps) {
       stepTypes[s.type] = (stepTypes[s.type] ?? 0) + 1;
       if (s.duration) totalDurationMs += s.duration;
-      if (s.token_count) totalTokens += s.token_count;
+      // token_count is stored inside the payload JSON, not as a top-level column
+      if (s.payload) {
+        try {
+          const p = JSON.parse(s.payload);
+          const tc = p.token_count ?? p.usage?.total_tokens ?? p.tokens ?? 0;
+          totalTokens += typeof tc === 'number' ? tc : 0;
+        } catch {
+          // malformed payload — skip token counting for this step
+        }
+      }
     }
 
     const createdAt = new Date(run.created_at).getTime();
