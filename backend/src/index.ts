@@ -531,6 +531,25 @@ app.post('/api/runs/:id/replay', (req: Request, res: Response) => {
 });
 
 // ---------------------------------------------------------------------------
+// DELETE /api/runs/:id
+// ---------------------------------------------------------------------------
+app.delete('/api/runs/:id', (req: Request, res: Response) => {
+  try {
+    const run = findRunOrNull(req.params.id);
+    if (!run) {
+      res.status(404).json({ error: 'Run not found' });
+      return;
+    }
+
+    // Steps are deleted automatically via ON DELETE CASCADE
+    db.prepare('DELETE FROM runs WHERE id = ?').run(req.params.id);
+    res.status(204).send();
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to delete run', message: err.message });
+  }
+});
+
+// ---------------------------------------------------------------------------
 // Start server
 // ---------------------------------------------------------------------------
 const server = app.listen(port, () => {
